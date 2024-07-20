@@ -1,0 +1,51 @@
+
+Per ottenere i log dall'edge node su mosquitto
+mosquitto_sub -h 192.168.1.125 -p 1883 -t default/edgenode/temperature -d
+
+
+---------------------------------------------------------------
+
+Per accedere a postgress database da cmd
+sudo -i -u postgres
+psql
+
+
+
+per accedere al db dal container
+docker exec -it 05b3a3471f6f bash
+root@05b3a3471f6f:/# psql -U cloudadmin cloud
+postgres-# CREATE DATABASE mytest;
+postgres-# \q
+
+
+Per accedere al db, in base al nome del pod da kubectl 
+kubectl exec -it cloud-app-db-65b979b787-qjz72 -- psql -U cloudadmin cloud
+
+
+Per vedere le relazioni
+\dt *.*
+
+Per vedere il contenuto delle tabelle
+SELECT * FROM cloud.timeseries;
+
+
+
+Per ottenere le metriche raw
+kubectl get --raw /apis/metrics.k8s.io/v1beta1/nodes/<NODE_NAME> | jq
+
+kubectl get --raw /apis/metrics.k8s.io/v1beta1/namespaces/<NAMESPACE>/pods/<POD_NAME> | jq
+
+per ottenere le metriche dei nodi tutte insieme
+kubectl top node
+
+
+------------------
+Da vedere per le funzioni sull'app
+https://docs.spring.io/spring-cloud-kubernetes/reference/discovery-client.html
+
+
+tutti gli esempi per le funzioni 
+https://github.com/fabric8io/kubernetes-client/blob/main/kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/ServiceExample.java
+
+Solo per le metriche funzioni.
+https://github.com/fabric8io/kubernetes-client/issues/2082
